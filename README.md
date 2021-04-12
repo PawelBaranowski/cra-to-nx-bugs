@@ -24,7 +24,7 @@ $ npx cra-to-nx
 $ yarn start
 ```
 :x: it doesn't work:
-```shell
+```
 yarn run v1.22.10
 $ nx serve
 
@@ -47,4 +47,62 @@ ERROR: Something went wrong in @nrwl/run-commands - Command failed: node ../../n
 
 error Command failed with exit code 1.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+```
+
+### 3. Fix issues
+First, calls to react-app-rewired binaries must be changed in `workspace.json`:
+```diff
+diff --git a/workspace.json b/workspace.json
+index 21e1346..94384c5 100644
+--- a/workspace.json
++++ b/workspace.json
+@@ -32,7 +32,7 @@
+             "{options.outputPath}"
+           ],
+           "options": {
+-            "command": "node ../../node_modules/.bin/react-app-rewired build",
++            "command": "node ../../node_modules/react-app-rewired/bin/index.js build",
+             "cwd": "apps/cra-to-nx-bugs",
+             "outputPath": "dist/apps/cra-to-nx-bugs"
+           }
+@@ -41,7 +41,7 @@
+           "executor": "@nrwl/workspace:run-commands",
+           "outputs": [],
+           "options": {
+-            "command": "node ../../node_modules/.bin/react-app-rewired start",
++            "command": "node ../../node_modules/react-app-rewired/bin/index.js start",
+             "cwd": "apps/cra-to-nx-bugs"
+           }
+         },
+@@ -57,7 +57,7 @@
+           "executor": "@nrwl/workspace:run-commands",
+           "outputs": [],
+           "options": {
+-            "command": "node ../../node_modules/.bin/react-app-rewired test --watchAll=false",
++            "command": "node ../../node_modules/react-app-rewired/bin/index.js test --watchAll=false",
+             "cwd": "apps/cra-to-nx-bugs"
+           }
+         }
+```
+Second, `.env` contains unnecessary double quotes.
+```diff
+diff --git a/.env b/.env
+index 55996b3..6f809cc 100644
+--- a/.env
++++ b/.env
+@@ -1 +1 @@
+-"SKIP_PREFLIGHT_CHECK=true" 
++SKIP_PREFLIGHT_CHECK=true
+```
+Now try to run it:
+```shell
+$ yarn start
+```
+:white_check_mark: it works again
+
+Additionaly nx is making a change to tsconfig.json:
+```
+The following changes are being made to your tsconfig.json file:
+  - compilerOptions.jsx must be react-jsx (to support the new JSX transform in React 17)
+  - compilerOptions.paths must not be set (aliased imports are not supported)
 ```

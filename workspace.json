@@ -32,7 +32,7 @@
             "{options.outputPath}"
           ],
           "options": {
-            "command": "node ../../node_modules/.bin/react-app-rewired build",
+            "command": "node ../../node_modules/react-app-rewired/bin/index.js build",
             "cwd": "apps/cra-to-nx-bugs",
             "outputPath": "dist/apps/cra-to-nx-bugs"
           }
@@ -41,7 +41,7 @@
           "executor": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
-            "command": "node ../../node_modules/.bin/react-app-rewired start",
+            "command": "node ../../node_modules/react-app-rewired/bin/index.js start",
             "cwd": "apps/cra-to-nx-bugs"
           }
         },
@@ -57,7 +57,7 @@
           "executor": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
-            "command": "node ../../node_modules/.bin/react-app-rewired test --watchAll=false",
+            "command": "node ../../node_modules/react-app-rewired/bin/index.js test --watchAll=false",
             "cwd": "apps/cra-to-nx-bugs"
           }
         }
